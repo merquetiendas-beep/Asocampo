@@ -53,7 +53,8 @@
     </div>
 
     <main class="container mx-auto px-4 pb-10">
-        <h2 class="text-2xl font-bold text-center mb-6">Productos Disponibles (Precio final incluye comisión ASOCAMPO)</h2>
+        <!-- ✅ TÍTULO LIMPIO, SIN NINGUNA MENCIÓN -->
+        <h2 class="text-2xl font-bold text-center mb-6">Productos Disponibles</h2>
         <div id="listaProductos" class="grid md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8"></div>
 
         <div id="detalleProducto" class="detalle bg-white rounded-xl shadow p-6 border-2 border-green-600">
@@ -74,7 +75,7 @@
         </div>
     </main>
 
-    <!-- FOOTER: AQUÍ QUEDAN TODOS LOS DATOS DE CONTACTO -->
+    <!-- FOOTER: DATOS DE CONTACTO -->
     <footer class="bg-primary text-white py-8 px-4 mt-12">
         <div class="container mx-auto grid md:grid-cols-3 gap-6">
             <div>
@@ -105,7 +106,6 @@
     </footer>
 
     <script>
-        // ✅ TODOS LOS PRODUCTOS ORIGINALES
         const productos = [
             {nombre: "Aguacate Hass", categoria: "Fruta", descripcion: "Aguacate fresco de la mejor calidad, cosechado en Córdoba.", precioBase: 5000, unidad: "/ Kilo", imagen: "imagenes_productos/Aguacate_hass.jpg", palabras: "aguacate, hass, fruta, verde"},
             {nombre: "Ajo", categoria: "Condimento", descripcion: "Ajo seco seleccionado, fuerte aroma y sabor intenso.", precioBase: 8000, unidad: "/ Kilo", imagen: "imagenes_productos/Ajo.jpg", palabras: "ajo, condimento, bulbo"},
@@ -145,7 +145,6 @@
             {nombre: "Zanahoria", categoria: "Verdura", descripcion: "Zanahoria larga, limpia y dulce.", precioBase: 1100, unidad: "/ Kilo", imagen: "imagenes_productos/Zanahoria.jpg", palabras: "zanahoria, verdura, raíz"}
         ];
 
-        // FUNCIÓN: CALCULA PRECIO + 10% COMISIÓN
         function calcularPrecioFinal(precioBase) {
             const comision = precioBase * 0.10;
             return precioBase + comision;
@@ -172,7 +171,7 @@
                     <h3 class="font-bold text-lg">${prod.nombre}</h3>
                     <p class="text-sm text-gray-600">${prod.categoria}</p>
                     <p class="text-green-700 font-semibold mt-1">${formatearPrecio(precioFinal)} ${prod.unidad}</p>
-                    <p class="text-xs text-gray-500">Incluye comisión ASOCAMPO</p>
+                    <!-- ✅ SE QUITÓ EL TEXTO DE COMISIÓN POR COMPLETO -->
                 `;
                 contenedor.appendChild(tarjeta);
             });
@@ -182,7 +181,7 @@
             const precioFinal = calcularPrecioFinal(prod.precioBase);
             document.getElementById('tituloProducto').textContent = prod.nombre;
             document.getElementById('descripcionProducto').textContent = prod.descripcion;
-            document.getElementById('precioProducto').textContent = 'Precio final: ' + formatearPrecio(precioFinal) + ' ' + prod.unidad;
+            document.getElementById('precioProducto').textContent = 'Precio: ' + formatearPrecio(precioFinal) + ' ' + prod.unidad;
             document.getElementById('imagenProducto').src = prod.imagen;
             document.getElementById('enlaceWhatsapp').href = `https://wa.me/573117517891?text=Hola,%20quiero%20información%20sobre:%20${encodeURIComponent(prod.nombre)}`;
             

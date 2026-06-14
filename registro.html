@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASOCAMPO - Registro de Productores</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2E7D32',
+                        light: '#F1F8E9',
+                        admin: '#1A237E'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .seccion { display: none; }
+        .seccion.activa { display: block; }
+        .producto-bloque { border: 1px solid #ccc; padding: 15px; border-radius: 8px; margin-bottom: 15px; background-color: #f9f9f9; }
+    </style>
+</head>
+<body class="bg-light min-h-screen">
+
+    <header class="bg-admin text-white py-6 px-4 text-center">
+        <h1 class="text-3xl font-bold"><i class="fa fa-user-circle"></i> REGISTRO DE PRODUCTORES Y PROVEEDORES</h1>
+        <p class="text-blue-200">Espacio para que los campesinos registren sus datos y sus productos</p>
+        <a href="index.html" class="text-sm text-blue-200 hover:text-white mt-2 inline-block">← Volver a la Tienda Principal</a>
+    </header>
+
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+
+        <div class="flex flex-wrap gap-2 mb-8 justify-center">
+            <button onclick="mostrarSeccion('datos')" class="btn-menu bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">📋 Mis Datos Personales</button>
+            <button onclick="mostrarSeccion('productos')" class="btn-menu bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">📦 Registrar Mis Productos</button>
+        </div>
+
+        <!-- SECCIÓN 1: DATOS DEL PRODUCTOR -->
+        <div id="datos" class="seccion activa bg-white rounded-xl shadow p-6 mb-8">
+            <h2 class="text-2xl font-bold text-primary mb-6">📝 Registro Completo del Productor</h2>
+            <p class="mb-4 text-gray-600">Llena todos tus datos para que te conozcan y puedan contactarte <strong>solo a través de la plataforma</strong>.</p>
+            <form id="formDatos" class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombres Completos</label>
+                    <input type="text" id="nombres" class="w-full p-2 border-2 border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Apellidos Completos</label>
+                    <input type="text" id="apellidos" class="w-full p-2 border-2 border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Municipio</label>
+                    <input type="text" id="municipio" class="w-full p-2 border-2 border-gray-300 rounded-lg" value="Córdoba" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Vereda / Corregimiento</label>
+                    <input type="text" id="vereda" class="w-full p-2 border-2 border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nombre de la Finca o Predio</label>
+                    <input type="text" id="finca" class="w-full p-2 border-2 border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Teléfono / WhatsApp</label>
+                    <input type="text" id="telefono" class="w-full p-2 border-2 border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                    <input type="email" id="correo" class="w-full p-2 border-2 border-gray-300 rounded-lg">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Dirección exacta</label>
+                    <input type="text" id="direccion" class="w-full p-2 border-2 border-gray-300 rounded-lg">
+                </div>
+                <div class="md:col-span-2 text-center mt-2">
+                    <button type="submit" class="bg-primary hover:bg-green-800 text-white font-bold py-3 px-8 rounded-lg text-lg">
+                        GUARDAR MIS DATOS
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- SECCIÓN 2: GESTIÓN DE PRODUCTOS - AMPLIADO A 5 ESPACIOS -->
+        <div id="productos" class="seccion bg-white rounded-xl shadow p-6 mb-8">
+            <h2 class="text-2xl font-bold text-primary mb-6">📦 Registrar Mis Productos (Máximo 5)</h2>
+            <p class="mb-4 text-gray-600"><strong>IMPORTANTE:</strong> Llena los datos de cada producto. Escribe el precio al que tú vendes. El sistema automáticamente le agregará el <strong>10% de comisión de ASOCAMPO</strong> al precio final que ve el comprador. Puedes registrar de 1 a 5 productos.</p>
+            
+            <form id="formProductos" class="bg-green-50 p-4 rounded-lg border mb-8">
+                
+                <!-- 🟢 PRODUCTO 1 -->
+                <div class="producto-bloque">
+                    <h3 class="font-bold text-lg mb-3 text-green-800">Producto 1</h3>
+                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm mb-1">Nombre del Producto</label>
+                            <input type="text" id="prod1_nombre" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Cantidad Disponible</label>
+                            <input type="text" id="prod1_cantidad" placeholder="Ej: 50 Kilos" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Tu Precio Base ($)</label>
+                            <input type="number" id="prod1_precio" placeholder="Ej: 5000" class="w-full p-2 border rounded-lg">
+                            <small class="text-green-700">Final: <span id="v1"></span></small>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm mb-1">Unidad</label>
+                            <select id="prod1_unidad" class="w-full p-2 border rounded-lg">
+                                <option value="/ Kilo">/ Kilo</option>
+                                <option value="/ Libra">/ Libra</option>
+                                <option value="/ Unidad">/ Unidad</option>
+                                <option value="/ Atado">/ Atado</option>
+                                <option value="/ Frasco">/ Frasco</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Categoría</label>
+                            <select id="prod1_categoria" class="w-full p-2 border rounded-lg">
+                                <option>Fruta</option>
+                                <option>Verdura</option>
+                                <option>Legumbre</option>
+                                <option>Tubérculo</option>
+                                <option>Cereal</option>
+                                <option>Lácteo</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Ruta Imagen</label>
+                            <input type="text" id="prod1_imagen" placeholder="ej: imagenes/aguacate.jpg" class="w-full p-2 border rounded-lg">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🟢 PRODUCTO 2 -->
+                <div class="producto-bloque">
+                    <h3 class="font-bold text-lg mb-3 text-green-800">Producto 2</h3>
+                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm mb-1">Nombre del Producto</label>
+                            <input type="text" id="prod2_nombre" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Cantidad Disponible</label>
+                            <input type="text" id="prod2_cantidad" placeholder="Ej: 20 Arrobas" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Tu Precio Base ($)</label>
+                            <input type="number" id="prod2_precio" placeholder="Ej: 22000" class="w-full p-2 border rounded-lg">
+                            <small class="text-green-700">Final: <span id="v2"></span></small>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm mb-1">Unidad</label>
+                            <select id="prod2_unidad" class="w-full p-2 border rounded-lg">
+                                <option value="/ Kilo">/ Kilo</option>
+                                <option value="/ Libra">/ Libra</option>
+                                <option value="/ Unidad">/ Unidad</option>
+                                <option value="/ Atado">/ Atado</option>
+                                <option value="/ Frasco">/ Frasco</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Categoría</label>
+                            <select id="prod2_categoria" class="w-full p-2 border rounded-lg">
+                                <option>Fruta</option>
+                                <option>Verdura</option>
+                                <option>Legumbre</option>
+                                <option>Tubérculo</option>
+                                <option>Cereal</option>
+                                <option>Lácteo</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Ruta Imagen</label>
+                            <input type="text" id="prod2_imagen" placeholder="ej: imagenes/cafe.jpg" class="w-full p-2 border rounded-lg">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🟢 PRODUCTO 3 -->
+                <div class="producto-bloque">
+                    <h3 class="font-bold text-lg mb-3 text-green-800">Producto 3</h3>
+                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm mb-1">Nombre del Producto</label>
+                            <input type="text" id="prod3_nombre" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Cantidad Disponible</label>
+                            <input type="text" id="prod3_cantidad" placeholder="Ej: 150 Unidades" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Tu Precio Base ($)</label>
+                            <input type="number" id="prod3_precio" placeholder="Ej: 800" class="w-full p-2 border rounded-lg">
+                            <small class="text-green-700">Final: <span id="v3"></span></small>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm mb-1">Unidad</label>
+                            <select id="prod3_unidad" class="w-full p-2 border rounded-lg">
+                                <option value="/ Kilo">/ Kilo</option>
+                                <option value="/ Libra">/ Libra</option>
+                                <option value="/ Unidad">/ Unidad</option>
+                                <option value="/ Atado">/ Atado</option>
+                                <option value="/ Frasco">/ Frasco</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Categoría</label>
+                            <select id="prod3_categoria" class="w-full p-2 border rounded-lg">
+                                <option>Fruta</option>
+                                <option>Verdura</option>
+                                <option>Legumbre</option>
+                                <option>Tubérculo</option>
+                                <option>Cereal</option>
+                                <option>Lácteo</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Ruta Imagen</label>
+                            <input type="text" id="prod3_imagen" placeholder="ej: imagenes/platano.jpg" class="w-full p-2 border rounded-lg">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🟢 PRODUCTO 4 -->
+                <div class="producto-bloque">
+                    <h3 class="font-bold text-lg mb-3 text-green-800">Producto 4</h3>
+                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm mb-1">Nombre del Producto</label>
+                            <input type="text" id="prod4_nombre" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Cantidad Disponible</label>
+                            <input type="text" id="prod4_cantidad" placeholder="Ej: 30 Kilos" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Tu Precio Base ($)</label>
+                            <input type="number" id="prod4_precio" placeholder="Ej: 7000" class="w-full p-2 border rounded-lg">
+                            <small class="text-green-700">Final: <span id="v4"></span></small>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm mb-1">Unidad</label>
+                            <select id="prod4_unidad" class="w-full p-2 border rounded-lg">
+                                <option value="/ Kilo">/ Kilo</option>
+                                <option value="/ Libra">/ Libra</option>
+                                <option value="/ Unidad">/ Unidad</option>
+                                <option value="/ Atado">/ Atado</option>
+                                <option value="/ Frasco">/ Frasco</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Categoría</label>
+                            <select id="prod4_categoria" class="w-full p-2 border rounded-lg">
+                                <option>Fruta</option>
+                                <option>Verdura</option>
+                                <option>Legumbre</option>
+                                <option>Tubérculo</option>
+                                <option>Cereal</option>
+                                <option>Lácteo</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Ruta Imagen</label>
+                            <input type="text" id="prod4_imagen" placeholder="ej: imagenes/queso.jpg" class="w-full p-2 border rounded-lg">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🟢 PRODUCTO 5 -->
+                <div class="producto-bloque">
+                    <h3 class="font-bold text-lg mb-3 text-green-800">Producto 5</h3>
+                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm mb-1">Nombre del Producto</label>
+                            <input type="text" id="prod5_nombre" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Cantidad Disponible</label>
+                            <input type="text" id="prod5_cantidad" placeholder="Ej: 100 Atados" class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Tu Precio Base ($)</label>
+                            <input type="number" id="prod5_precio" placeholder="Ej: 500" class="w-full p-2 border rounded-lg">
+                            <small class="text-green-700">Final: <span id="v5"></span></small>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm mb-1">Unidad</label>
+                            <select id="prod5_unidad" class="w-full p-2 border rounded-lg">
+                                <option value="/ Kilo">/ Kilo</option>
+                                <option value="/ Libra">/ Libra</option>
+                                <option value="/ Unidad">/ Unidad</option>
+                                <option value="/ Atado">/ Atado</option>
+                                <option value="/ Frasco">/ Frasco</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Categoría</label>
+                            <select id="prod5_categoria" class="w-full p-2 border rounded-lg">
+                                <option>Fruta</option>
+                                <option>Verdura</option>
+                                <option>Legumbre</option>
+                                <option>Tubérculo</option>
+                                <option>Cereal</option>
+                                <option>Lácteo</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Ruta Imagen</label>
+                            <input type="text" id="prod5_imagen" placeholder="ej: imagenes/cilantro.jpg" class="w-full p-2 border rounded-lg">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-6">
+                    <button type="submit" class="bg-primary text-white px-8 py-3 rounded-lg font-bold text-lg">💾 GUARDAR TODOS MIS PRODUCTOS</button>
+                </div>
+            </form>
+
+            <h3 class="font-bold text-lg mb-3">Mis productos registrados</h3>
+            <div id="listaMisProductos" class="text-gray-600 italic">Aún no has registrado productos.</div>
+        </div>
+
+    </div>
+
+    <script>
+        let datosProductor = {};
+        let listaProductos = [];
+
+        // Vista previa automática del precio con 10%
+        for(let i=1; i<=5; i++){
+            document.getElementById(`prod${i}_precio`).addEventListener('input', function(){
+                const val = parseInt(this.value) || 0;
+                document.getElementById(`v${i}`).textContent = '$' + (val * 1.10).toLocaleString('es-CO');
+            });
+        }
+
+        function mostrarSeccion(idSeccion) {
+            document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
+            document.getElementById(idSeccion).classList.add('activa');
+        }
+
+        document.getElementById('formDatos').addEventListener('submit', function(e) {
+            e.preventDefault();
+            datosProductor = {
+                id: Date.now(),
+                nombres: document.getElementById('nombres').value,
+                apellidos: document.getElementById('apellidos').value,
+                municipio: document.getElementById('municipio').value,
+                vereda: document.getElementById('vereda').value,
+                finca: document.getElementById('finca').value,
+                telefono: document.getElementById('telefono').value,
+                correo: document.getElementById('correo').value,
+                direccion: document.getElementById('direccion').value,
+                productos: listaProductos
+            };
+            localStorage.setItem('datosProductor', JSON.stringify(datosProductor));
+            
+            // Guardar también en el directorio general para que lo veas tú
+            let directorio = JSON.parse(localStorage.getItem('directorioAsocampo')) || [];
+            let existe = directorio.findIndex(p => p.telefono === datosProductor.telefono);
+            if(existe >=0) directorio[existe] = datosProductor;
+            else directorio.push(datosProductor);
+            localStorage.setItem('directorioAsocampo', JSON.stringify(directorio));
+
+            alert("✅ Datos guardados correctamente.");
+        });
+
+        document.getElementById('formProductos').addEventListener('submit', function(e) {
+            e.preventDefault();
+            listaProductos = []; // Limpiar antes de agregar
+
+            // Recorrer los 5 productos
+            for(let i=1; i<=5; i++){
+                let nombre = document.getElementById(`prod${i}_nombre`).value.trim();
+                // Solo guardar si tiene nombre (si está vacío se ignora)
+                if(nombre !== ''){
+                    let precioBase = parseInt(document.getElementById(`prod${i}_precio`).value);
+                    listaProductos.push({
+                        id: Date.now() + i,
+                        nombre: nombre,
+                        cantidad: document.getElementById(`prod${i}_cantidad`).value,
+                        precioBase: precioBase,
+                        precioFinal: Math.round(precioBase * 1.10),
+                        unidad: document.getElementById(`prod${i}_unidad`).value,
+                        categoria: document.getElementById(`prod${i}_categoria`).value,
+                        imagen: document.getElementById(`prod${i}_imagen`).value
+                    });
+                }
+            }
+            
+            actualizarListaProductos();
+            alert("✅ Productos guardados: " + listaProductos.length + " productos registrados. Recuerda GUARDAR TUS DATOS PERSONALES para que aparezcan en la tienda.");
+        });
+
+        function actualizarListaProductos() {
+            const contenedor = document.getElementById('listaMisProductos');
+            if(listaProductos.length === 0) {
+                contenedor.innerHTML = "Aún no has registrado productos.";
+                return;
+            }
+            contenedor.innerHTML = listaProductos.map(p => 
+                `<div class="border-b py-2 flex justify-between items-center">
+                    <div>
+                        <b>${p.nombre}</b> | Tu precio: $${p.precioBase} | Precio final: <span class="text-green-700 font-bold">$${p.precioFinal}</span>
+                    </div>
+                </div>`
+            ).join('');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASOCAMPO - Asociación de Mujeres Campesinas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2E7D32',
+                        light: '#F1F8E9',
+                        admin: '#1A237E'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .card-hover { transition: all 0.3s; cursor: pointer; }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+        .detalle { max-height: 0; overflow: hidden; transition: all 0.4s; opacity: 0; }
+        .detalle.mostrar { max-height: 800px; opacity: 1; margin: 20px 0; }
+    </style>
+</head>
+<body class="bg-light min-h-screen">
+
+    <header class="bg-primary text-white py-8 px-4 text-center">
+        <h1 class="text-4xl font-bold mb-2"><i class="fa fa-leaf"></i> ASOCAMPO</h1>
+        <p>Asociación de Mujeres Campesinas de Córdoba - Quindío</p>
+    </header>
+
+    <div class="container mx-auto px-4 py-6">
+        <div class="bg-white rounded-xl shadow p-6 -mt-8 relative z-10">
+            <!-- Buscador -->
+            <div class="relative mb-6">
+                <input type="text" id="buscador" placeholder="🔍 Buscar producto..." 
+                       class="w-full p-4 pl-10 border-2 border-green-600 rounded-lg text-lg">
+                <i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-green-700"></i>
+            </div>
+
+            <!-- BOTÓN DE REGISTRO SOLO PARA PRODUCTORES -->
+            <div class="text-center mt-4">
+                <a href="registro.html" class="inline-block bg-admin hover:bg-blue-900 text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg">
+                    🔗 Registrarse como Productor / Proveedor
+                </a>
+                <p class="text-sm text-gray-600 mt-2">¿Eres campesino y quieres vender tus productos? Ingresa aquí</p>
+            </div>
+        </div>
+    </div>
+
+    <main class="container mx-auto px-4 pb-10">
+        <h2 class="text-2xl font-bold text-center mb-6">Productos Disponibles (Precio final incluye comisión ASOCAMPO)</h2>
+        <div id="listaProductos" class="grid md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8"></div>
+
+        <div id="detalleProducto" class="detalle bg-white rounded-xl shadow p-6 border-2 border-green-600">
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 id="tituloProducto" class="text-2xl font-bold mb-3"></h3>
+                    <p id="descripcionProducto" class="text-gray-700 mb-4"></p>
+                    <p id="precioProducto" class="text-xl font-bold text-green-700 mb-4"></p>
+                    <a href="#" id="enlaceWhatsapp" target="_blank" 
+                       class="block w-full bg-green-600 hover:bg-green-700 text-white text-center py-3 rounded-lg">
+                        <i class="fa fa-whatsapp"></i> Pedir por WhatsApp
+                    </a>
+                </div>
+                <div>
+                    <img id="imagenProducto" src="" alt="Producto" class="w-full h-auto rounded-lg shadow">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER: AQUÍ QUEDAN TODOS LOS DATOS DE CONTACTO -->
+    <footer class="bg-primary text-white py-8 px-4 mt-12">
+        <div class="container mx-auto grid md:grid-cols-3 gap-6">
+            <div>
+                <h4 class="font-bold text-lg mb-2">ASOCAMPO</h4>
+                <p>Asociación de Mujeres Campesinas, trabajando por el desarrollo y la calidad de nuestros productos en la región.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg mb-2">Contacto</h4>
+                <p class="mb-1"><i class="fa fa-phone mr-2"></i> 311 751 7891</p>
+                <p class="mb-1"><i class="fa fa-envelope mr-2"></i> asocampo@hotmail.com</p>
+                <p><i class="fa fa-map-marker mr-2"></i> Carrera 10 Calle 9 Esquina, Córdoba - Quindío</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg mb-2">Síguenos</h4>
+                <div class="flex gap-3 text-xl">
+                    <a href="#" class="hover:text-green-200"><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="hover:text-green-200"><i class="fa fa-instagram"></i></a>
+                    <a href="#" class="hover:text-green-200"><i class="fa fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-6 pt-4 border-t border-green-700">
+            <p>© 2026 ASOCAMPO - Todos los derechos reservados</p>
+            <!-- ENLACE OCULTO SOLO PARA ADMINISTRADOR -->
+            <a href="admin.html" class="text-xs text-green-300 hover:text-white">🔒 Acceso Admin</a>
+        </div>
+    </footer>
+
+    <script>
+        // ✅ TODOS LOS PRODUCTOS ORIGINALES
+        const productos = [
+            {nombre: "Aguacate Hass", categoria: "Fruta", descripcion: "Aguacate fresco de la mejor calidad, cosechado en Córdoba.", precioBase: 5000, unidad: "/ Kilo", imagen: "imagenes_productos/Aguacate_hass.jpg", palabras: "aguacate, hass, fruta, verde"},
+            {nombre: "Ajo", categoria: "Condimento", descripcion: "Ajo seco seleccionado, fuerte aroma y sabor intenso.", precioBase: 8000, unidad: "/ Kilo", imagen: "imagenes_productos/Ajo.jpg", palabras: "ajo, condimento, bulbo"},
+            {nombre: "Albahaca", categoria: "Hierba", descripcion: "Albahaca fresca, ideal para cocinar y aromatizar.", precioBase: 600, unidad: "/ Atado", imagen: "imagenes_productos/Albahaca.jpg", palabras: "albahaca, hierba, verde"},
+            {nombre: "Arveja", categoria: "Legumbre", descripcion: "Arveja tierna y dulce, directa de la mata.", precioBase: 3000, unidad: "/ Kilo", imagen: "imagenes_productos/Alverja.jpg", palabras: "arveja, alverja, legumbre, verde"},
+            {nombre: "Arracacha", categoria: "Tubérculo", descripcion: "Arracacha blanca, limpia y lista para cocinar.", precioBase: 1200, unidad: "/ Kilo", imagen: "imagenes_productos/Arracacha.jpg", palabras: "arracacha, tubérculo, raíz"},
+            {nombre: "Avena", categoria: "Cereal", descripcion: "Avena en grano, natural y sin procesar.", precioBase: 1800, unidad: "/ Kilo", imagen: "imagenes_productos/Avena.jpg", palabras: "avena, cereal, grano"},
+            {nombre: "Banano", categoria: "Fruta", descripcion: "Banano maduro, dulce y de tamaño grande.", precioBase: 900, unidad: "/ Kilo", imagen: "imagenes_productos/Banano.jpg", palabras: "banano, fruta, amarillo"},
+            {nombre: "Cacao", categoria: "Grano", descripcion: "Cacao en grano seleccionado, excelente calidad.", precioBase: 12000, unidad: "/ Kilo", imagen: "imagenes_productos/Cacao.jpg", palabras: "cacao, grano, chocolate"},
+            {nombre: "Café Especial", categoria: "Grano", descripcion: "Café supremo, cultivado a gran altura, aroma único.", precioBase: 22000, unidad: "/ Libra", imagen: "imagenes_productos/cafe_especial.jpg", palabras: "cafe, café, especial, grano, bebida"},
+            {nombre: "Cilantro", categoria: "Hierba", descripcion: "Cilantro fresco, aromático y de hojas grandes.", precioBase: 500, unidad: "/ Atado", imagen: "imagenes_productos/Cilantro.jpg", palabras: "cilantro, hierba, verde"},
+            {nombre: "Espinaca", categoria: "Verdura", descripcion: "Espinaca fresca, rica en hierro y nutrientes.", precioBase: 700, unidad: "/ Atado", imagen: "imagenes_productos/Espinaca.jpg", palabras: "espinaca, verdura, hoja"},
+            {nombre: "Frijol", categoria: "Legumbre", descripcion: "Frijol variedad cargamanto, seco y limpio.", precioBase: 4500, unidad: "/ Kilo", imagen: "imagenes_productos/frijol.jpg", palabras: "frijol, legumbre, grano"},
+            {nombre: "Guayaba", categoria: "Fruta", descripcion: "Guayaba dulce, madura y de carne suave.", precioBase: 1800, unidad: "/ Kilo", imagen: "imagenes_productos/Guayaba.jpg", palabras: "guayaba, fruta, dulce"},
+            {nombre: "Huevo Categoría AA", categoria: "Huevo", descripcion: "Huevo extragrande, de gallinas alimentadas naturalmente.", precioBase: 450, unidad: "/ Unidad", imagen: "imagenes_productos/Huevo_AA.jpg", palabras: "huevo, aa, grande"},
+            {nombre: "Leche Artesanal", categoria: "Lácteo", descripcion: "Leche entera, fresca y sin procesar.", precioBase: 2500, unidad: "/ Litro", imagen: "imagenes_productos/Leche.jpg", palabras: "leche, lácteo, natural"},
+            {nombre: "Lechuga", categoria: "Verdura", descripcion: "Lechuga crespa, fresca y crujiente.", precioBase: 800, unidad: "/ Unidad", imagen: "imagenes_productos/Lechuga.jpg", palabras: "lechuga, verdura, hoja"},
+            {nombre: "Lenteja", categoria: "Legumbre", descripcion: "Lenteja seleccionada, limpia y de calidad.", precioBase: 3200, unidad: "/ Kilo", imagen: "imagenes_productos/lenteja.jpg", palabras: "lenteja, legumbre, grano"},
+            {nombre: "Limón", categoria: "Fruta", descripcion: "Limón Tahití, jugoso y ácido.", precioBase: 1500, unidad: "/ Kilo", imagen: "imagenes_productos/limon.jpg", palabras: "limon, limón, cítrico"},
+            {nombre: "Lulo", categoria: "Fruta", descripcion: "Lulo aromático, ideal para jugos y postres.", precioBase: 3500, unidad: "/ Kilo", imagen: "imagenes_productos/Lulo.jpg", palabras: "lulo, fruta, ácido"},
+            {nombre: "Maíz", categoria: "Cereal", descripcion: "Maíz tierno, dulce y fresco.", precioBase: 1200, unidad: "/ Kilo", imagen: "imagenes_productos/maiz.jpg", palabras: "maiz, maíz, cereal, tierno"},
+            {nombre: "Mandarina", categoria: "Fruta", descripcion: "Mandarina dulce, fácil de pelar y sin semillas.", precioBase: 1800, unidad: "/ Kilo", imagen: "imagenes_productos/mandarina.jpg", palabras: "mandarina, cítrico, dulce"},
+            {nombre: "Mango", categoria: "Fruta", descripcion: "Mango común, maduro y muy dulce.", precioBase: 1600, unidad: "/ Kilo", imagen: "imagenes_productos/Mango.jpg", palabras: "mango, fruta, dulce"},
+            {nombre: "Mermeladas", categoria: "Conserva", descripcion: "Mermeladas artesanales de frutas naturales.", precioBase: 5000, unidad: "/ Frasco", imagen: "imagenes_productos/Mermeladas.jpg", palabras: "mermelada, conserva, dulce"},
+            {nombre: "Miel de Abejas", categoria: "Producto Apícola", descripcion: "Miel pura, recolectada en zonas verdes.", precioBase: 12000, unidad: "/ Frasco", imagen: "imagenes_productos/Miel_de_Abejas.jpg", palabras: "miel, abejas, dulce, natural"},
+            {nombre: "Mora", categoria: "Fruta", descripcion: "Mora híbrida, excelente para jugos y postres.", precioBase: 4000, unidad: "/ Kilo", imagen: "imagenes_productos/Mora.jpg", palabras: "mora, fruta, ácida"},
+            {nombre: "Naranja", categoria: "Fruta", descripcion: "Naranja de jugo, dulce y muy jugosa.", precioBase: 1200, unidad: "/ Kilo", imagen: "imagenes_productos/Naranja.jpg", palabras: "naranja, cítrico, jugo"},
+            {nombre: "Ñame", categoria: "Tubérculo", descripcion: "Ñame liso, suave y nutritivo.", precioBase: 1400, unidad: "/ Kilo", imagen: "imagenes_productos/Name.jpg", palabras: "name, ñame, tubérculo"},
+            {nombre: "Orégano", categoria: "Condimento", descripcion: "Orégano seco, muy aromático y sabroso.", precioBase: 800, unidad: "/ Atado", imagen: "imagenes_productos/Oregano.jpg", palabras: "oregano, orégano, condimento"},
+            {nombre: "Panela", categoria: "Endulzante", descripcion: "Panela artesanal, pura y sin aditivos.", precioBase: 3000, unidad: "/ Bloque", imagen: "imagenes_productos/Panela.jpg", palabras: "panela, caña, dulce"},
+            {nombre: "Papa", categoria: "Tubérculo", descripcion: "Papa variedad única, buena para cocinar.", precioBase: 1000, unidad: "/ Kilo", imagen: "imagenes_productos/Papa.jpg", palabras: "papa, tubérculo, raíz"},
+            {nombre: "Papaya Hawaiana", categoria: "Fruta", descripcion: "Papaya pequeña, dulce y muy aromática.", precioBase: 2000, unidad: "/ Kilo", imagen: "imagenes_productos/Papaya_hawaiana.jpg", palabras: "papaya, fruta, dulce"},
+            {nombre: "Plátano Hartón", categoria: "Fruta", descripcion: "Plátano grande, ideal para cocinar o maduro.", precioBase: 800, unidad: "/ Unidad", imagen: "imagenes_productos/platano_harton.jpg", palabras: "platano, plátano, hartón, fruta"},
+            {nombre: "Queso Campesino", categoria: "Lácteo", descripcion: "Queso fresco, sin sal, hecho artesanalmente.", precioBase: 8000, unidad: "/ Kilo", imagen: "imagenes_productos/Quezo_campesino.jpg", palabras: "queso, campesino, lácteo"},
+            {nombre: "Cuajada", categoria: "Lácteo", descripcion: "Cuajada fresca, natural y deliciosa.", precioBase: 7000, unidad: "/ Kilo", imagen: "imagenes_productos/Quezo_cuajada.jpg", palabras: "cuajada, queso, lácteo"},
+            {nombre: "Repollo", categoria: "Verdura", descripcion: "Repollo liso, fresco y compacto.", precioBase: 1200, unidad: "/ Unidad", imagen: "imagenes_productos/Repollo.jpg", palabras: "repollo, verdura, hoja"},
+            {nombre: "Zanahoria", categoria: "Verdura", descripcion: "Zanahoria larga, limpia y dulce.", precioBase: 1100, unidad: "/ Kilo", imagen: "imagenes_productos/Zanahoria.jpg", palabras: "zanahoria, verdura, raíz"}
+        ];
+
+        // FUNCIÓN: CALCULA PRECIO + 10% COMISIÓN
+        function calcularPrecioFinal(precioBase) {
+            const comision = precioBase * 0.10;
+            return precioBase + comision;
+        }
+
+        function formatearPrecio(precio) {
+            return "$" + precio.toLocaleString('es-CO');
+        }
+
+        function cargarProductos(lista = productos) {
+            const contenedor = document.getElementById('listaProductos');
+            contenedor.innerHTML = '';
+            if(lista.length === 0) {
+                contenedor.innerHTML = '<p class="col-span-full text-center text-gray-500 py-10">No se encontraron productos</p>';
+                return;
+            }
+            lista.forEach(prod => {
+                const precioFinal = calcularPrecioFinal(prod.precioBase);
+                const tarjeta = document.createElement('div');
+                tarjeta.className = 'bg-white rounded-lg shadow p-3 card-hover';
+                tarjeta.onclick = () => verDetalle(prod);
+                tarjeta.innerHTML = `
+                    <img src="${prod.imagen}" alt="${prod.nombre}" class="w-full h-32 object-cover rounded mb-2">
+                    <h3 class="font-bold text-lg">${prod.nombre}</h3>
+                    <p class="text-sm text-gray-600">${prod.categoria}</p>
+                    <p class="text-green-700 font-semibold mt-1">${formatearPrecio(precioFinal)} ${prod.unidad}</p>
+                    <p class="text-xs text-gray-500">Incluye comisión ASOCAMPO</p>
+                `;
+                contenedor.appendChild(tarjeta);
+            });
+        }
+
+        function verDetalle(prod) {
+            const precioFinal = calcularPrecioFinal(prod.precioBase);
+            document.getElementById('tituloProducto').textContent = prod.nombre;
+            document.getElementById('descripcionProducto').textContent = prod.descripcion;
+            document.getElementById('precioProducto').textContent = 'Precio final: ' + formatearPrecio(precioFinal) + ' ' + prod.unidad;
+            document.getElementById('imagenProducto').src = prod.imagen;
+            document.getElementById('enlaceWhatsapp').href = `https://wa.me/573117517891?text=Hola,%20quiero%20información%20sobre:%20${encodeURIComponent(prod.nombre)}`;
+            
+            const detalle = document.getElementById('detalleProducto');
+            detalle.classList.add('mostrar');
+            detalle.scrollIntoView({behavior: 'smooth'});
+        }
+
+        document.getElementById('buscador').addEventListener('input', function() {
+            const texto = this.value.toLowerCase().trim();
+            document.getElementById('detalleProducto').classList.remove('mostrar');
+            if(texto === '') return cargarProductos();
+            const filtrados = productos.filter(p => 
+                p.nombre.toLowerCase().includes(texto) || 
+                p.categoria.toLowerCase().includes(texto) || 
+                p.palabras.includes(texto)
+            );
+            cargarProductos(filtrados);
+        });
+
+        cargarProductos();
+    </script>
+</body>
+</html>

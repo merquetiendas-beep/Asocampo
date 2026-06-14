@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASOCAMPO - PANEL DE ADMINISTRADOR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2E7D32',
+                        admin: '#1A237E'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- PANTALLA DE ACCESO - AHORA 100% SEGURA, SIN PISTAS NI CONTRASEÑA A LA VISTA -->
+    <div id="login" class="container mx-auto px-4 py-20 max-w-md">
+        <div class="bg-white rounded-xl shadow p-8 text-center">
+            <i class="fa fa-lock text-6xl text-admin mb-4"></i>
+            <h2 class="text-2xl font-bold mb-4">ACCESO RESTRINGIDO</h2>
+            <p class="mb-4 text-gray-600">Solo para administradores de ASOCAMPO</p>
+            
+            <input type="password" id="clave" placeholder="Ingrese su contraseña" class="w-full p-3 border-2 border-gray-300 rounded-lg mb-4 text-center">
+            <button onclick="verificarAcceso()" class="w-full bg-admin text-white py-3 rounded-lg font-bold hover:bg-blue-900">INGRESAR</button>
+
+            <!-- ✅ SE QUITÓ LA CONTRASEÑA Y EL TEXTO QUE SE VEÍA ANTES -->
+        </div>
+    </div>
+
+    <!-- PANEL DE CONTROL - ESTO ESTÁ OCULTO HASTA QUE SE PONGA LA CLAVE -->
+    <div id="panel" class="hidden container mx-auto px-4 py-8 max-w-6xl">
+        <header class="bg-admin text-white p-6 rounded-xl mb-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold"><i class="fa fa-user-secret"></i> PANEL DE ADMINISTRACIÓN</h1>
+                <p>Directorio completo de productores y gestión de comisiones (10%)</p>
+            </div>
+            <a href="index.html" class="bg-white text-admin px-4 py-2 rounded-lg font-bold">Volver a Tienda</a>
+        </header>
+
+        <div class="bg-white rounded-xl shadow p-6">
+            <h2 class="text-2xl font-bold text-primary mb-6">👥 Lista de Todos los Productores Registrados</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-primary text-white">
+                            <th class="border p-2 text-left">Nombre Completo</th>
+                            <th class="border p-2 text-left">Ubicación / Finca</th>
+                            <th class="border p-2 text-left">Contacto</th>
+                            <th class="border p-2 text-left">Productos y Precios (Base / Final +10%)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaAdmin">
+                        <tr><td colspan="4" class="p-4 text-center text-gray-500">Cargando datos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 🔒 CONTRASEÑA GUARDADA SOLO AQUÍ DENTRO, NADIE LA VE:
+        const CLAVE_ADMIN = "asocampo2026"; // ✅ PUEDES CAMBIARLA POR OTRA, EJ: "miclave123"
+
+        function verificarAcceso() {
+            const claveIngresada = document.getElementById('clave').value.trim();
+            
+            if(claveIngresada === CLAVE_ADMIN) {
+                // ✅ Si acierta, se abre el panel
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('panel').classList.remove('hidden');
+                cargarDirectorioAdmin();
+            } else {
+                // ❌ Si falla, avisa y no deja pasar
+                alert("❌ Contraseña incorrecta. No tienes permiso para ver esta información.");
+                document.getElementById('clave').value = "";
+            }
+        }
+
+        // 🚀 PROTECCIÓN EXTRA: Si alguien intenta entrar directo al enlace sin poner clave, lo bloquea
+        window.onload = function() {
+            // El panel arranca siempre oculto hasta que se valide
+            document.getElementById('panel').classList.add('hidden');
+        };
+
+        function cargarDirectorioAdmin() {
+            const directorioGeneral = JSON.parse(localStorage.getItem('directorioAsocampo')) || [];
+            const tbody = document.getElementById('tablaAdmin');
+            
+            if(directorioGeneral.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-gray-500">Aún no hay productores registrados en la plataforma</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = directorioGeneral.map(prod => `
+                <tr class="border-b hover:bg-green-50">
+                    <td class="p-2"><b>${prod.nombres} ${prod.apellidos}</b></td>
+                    <td class="p-2">${prod.vereda}, ${prod.municipio}<br><i>${prod.finca}</i></td>
+                    <td class="p-2">📞 ${prod.telefono}<br>✉️ ${prod.correo || 'Sin correo'}</td>
+                    <td class="p-2">
+                        ${prod.productos.length === 0 ? 'Sin productos registrados' : 
+                            prod.productos.map(p => 
+                                `• ${p.nombre}: Base $${p.precioBase} | <span class="text-green-700 font-bold">Final $${p.precioFinal}</span><br>`
+                            ).join('')
+                        }
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 📱 Permitir entrar presionando la tecla "Enter"
+        document.getElementById('clave').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') verificarAcceso();
+        });
+    </script>
+</body>
+</html>

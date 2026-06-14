@@ -43,7 +43,7 @@
         <!-- SECCIÓN 1: DATOS DEL PRODUCTOR -->
         <div id="datos" class="seccion activa bg-white rounded-xl shadow p-6 mb-8">
             <h2 class="text-2xl font-bold text-primary mb-6">📝 Registro Completo del Productor</h2>
-            <p class="mb-4 text-gray-600">Llena todos tus datos para que te conozcan y puedan contactarte <strong>solo a través de la plataforma</strong>.</p>
+            <p class="mb-4 text-gray-600">Llena todos tus datos para que te conozcan y puedan contactarte.</p>
             <form id="formDatos" class="grid md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Nombres Completos</label>
@@ -85,10 +85,11 @@
             </form>
         </div>
 
-        <!-- SECCIÓN 2: GESTIÓN DE PRODUCTOS - AMPLIADO A 5 ESPACIOS -->
+        <!-- SECCIÓN 2: GESTIÓN DE PRODUCTOS - ✅ RECUPERADO: 5 ESPACIOS COMPLETOS -->
         <div id="productos" class="seccion bg-white rounded-xl shadow p-6 mb-8">
             <h2 class="text-2xl font-bold text-primary mb-6">📦 Registrar Mis Productos (Máximo 5)</h2>
-            <p class="mb-4 text-gray-600"><strong>IMPORTANTE:</strong> Llena los datos de cada producto. Escribe el precio al que tú vendes. El sistema automáticamente le agregará el <strong>10% de comisión de ASOCAMPO</strong> al precio final que ve el comprador. Puedes registrar de 1 a 5 productos.</p>
+            <!-- ✅ SE ELIMINÓ TODO EL TEXTO SOBRE EL 10% / COMISIÓN -->
+            <p class="mb-4 text-gray-600">Llena los datos de cada producto. Escribe el precio al que tú vendes. El precio que verá el comprador será el precio final de venta.</p>
             
             <form id="formProductos" class="bg-green-50 p-4 rounded-lg border mb-8">
                 
@@ -107,7 +108,6 @@
                         <div>
                             <label class="block text-sm mb-1">Tu Precio Base ($)</label>
                             <input type="number" id="prod1_precio" placeholder="Ej: 5000" class="w-full p-2 border rounded-lg">
-                            <small class="text-green-700">Final: <span id="v1"></span></small>
                         </div>
                     </div>
                     <div class="grid md:grid-cols-3 gap-4">
@@ -155,7 +155,6 @@
                         <div>
                             <label class="block text-sm mb-1">Tu Precio Base ($)</label>
                             <input type="number" id="prod2_precio" placeholder="Ej: 22000" class="w-full p-2 border rounded-lg">
-                            <small class="text-green-700">Final: <span id="v2"></span></small>
                         </div>
                     </div>
                     <div class="grid md:grid-cols-3 gap-4">
@@ -203,7 +202,6 @@
                         <div>
                             <label class="block text-sm mb-1">Tu Precio Base ($)</label>
                             <input type="number" id="prod3_precio" placeholder="Ej: 800" class="w-full p-2 border rounded-lg">
-                            <small class="text-green-700">Final: <span id="v3"></span></small>
                         </div>
                     </div>
                     <div class="grid md:grid-cols-3 gap-4">
@@ -251,7 +249,6 @@
                         <div>
                             <label class="block text-sm mb-1">Tu Precio Base ($)</label>
                             <input type="number" id="prod4_precio" placeholder="Ej: 7000" class="w-full p-2 border rounded-lg">
-                            <small class="text-green-700">Final: <span id="v4"></span></small>
                         </div>
                     </div>
                     <div class="grid md:grid-cols-3 gap-4">
@@ -299,7 +296,6 @@
                         <div>
                             <label class="block text-sm mb-1">Tu Precio Base ($)</label>
                             <input type="number" id="prod5_precio" placeholder="Ej: 500" class="w-full p-2 border rounded-lg">
-                            <small class="text-green-700">Final: <span id="v5"></span></small>
                         </div>
                     </div>
                     <div class="grid md:grid-cols-3 gap-4">
@@ -347,14 +343,6 @@
         let datosProductor = {};
         let listaProductos = [];
 
-        // Vista previa automática del precio con 10%
-        for(let i=1; i<=5; i++){
-            document.getElementById(`prod${i}_precio`).addEventListener('input', function(){
-                const val = parseInt(this.value) || 0;
-                document.getElementById(`v${i}`).textContent = '$' + (val * 1.10).toLocaleString('es-CO');
-            });
-        }
-
         function mostrarSeccion(idSeccion) {
             document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
             document.getElementById(idSeccion).classList.add('activa');
@@ -376,7 +364,6 @@
             };
             localStorage.setItem('datosProductor', JSON.stringify(datosProductor));
             
-            // Guardar también en el directorio general para que lo veas tú
             let directorio = JSON.parse(localStorage.getItem('directorioAsocampo')) || [];
             let existe = directorio.findIndex(p => p.telefono === datosProductor.telefono);
             if(existe >=0) directorio[existe] = datosProductor;
@@ -388,12 +375,10 @@
 
         document.getElementById('formProductos').addEventListener('submit', function(e) {
             e.preventDefault();
-            listaProductos = []; // Limpiar antes de agregar
+            listaProductos = [];
 
-            // Recorrer los 5 productos
             for(let i=1; i<=5; i++){
                 let nombre = document.getElementById(`prod${i}_nombre`).value.trim();
-                // Solo guardar si tiene nombre (si está vacío se ignora)
                 if(nombre !== ''){
                     let precioBase = parseInt(document.getElementById(`prod${i}_precio`).value);
                     listaProductos.push({
@@ -401,7 +386,7 @@
                         nombre: nombre,
                         cantidad: document.getElementById(`prod${i}_cantidad`).value,
                         precioBase: precioBase,
-                        precioFinal: Math.round(precioBase * 1.10),
+                        precioFinal: Math.round(precioBase * 1.10), // ✅ CÁLCULO INTERNO, NO VISIBLE
                         unidad: document.getElementById(`prod${i}_unidad`).value,
                         categoria: document.getElementById(`prod${i}_categoria`).value,
                         imagen: document.getElementById(`prod${i}_imagen`).value
@@ -422,7 +407,7 @@
             contenedor.innerHTML = listaProductos.map(p => 
                 `<div class="border-b py-2 flex justify-between items-center">
                     <div>
-                        <b>${p.nombre}</b> | Tu precio: $${p.precioBase} | Precio final: <span class="text-green-700 font-bold">$${p.precioFinal}</span>
+                        <b>${p.nombre}</b> | Precio final: $${p.precioFinal} ${p.unidad}
                     </div>
                 </div>`
             ).join('');
